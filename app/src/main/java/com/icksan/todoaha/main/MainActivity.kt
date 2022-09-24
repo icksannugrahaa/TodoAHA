@@ -1,7 +1,7 @@
 package com.icksan.todoaha.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.icksan.todoaha.R
 import com.icksan.todoaha.databinding.ActivityMainBinding

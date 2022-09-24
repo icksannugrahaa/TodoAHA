@@ -10,11 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,6 +27,7 @@ import com.google.android.gms.tasks.Task
 import com.icksan.todoaha.BuildConfig
 import com.icksan.todoaha.R
 import com.icksan.todoaha.core.data.Resource
+import com.icksan.todoaha.core.utils.GlobalUtils
 import com.icksan.todoaha.databinding.FragmentMapsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,11 +51,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     ): View {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        fetchLastLocation()
-        return binding.root
-    }
-
-    private fun fetchLastLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -68,12 +63,24 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_CODE
             )
+            GlobalUtils.showToast("Please reopen!", requireContext())
             fetchLastLocation()
-            return
+            return binding.root
         }
+        fetchLastLocation()
+        return binding.root
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        direction()
+    }
+
+    private fun fetchLastLocation() {
         val task: Task<Location> = fusedLocationProviderClient.lastLocation
         task.addOnSuccessListener { location ->
             if (location != null) {
+                Log.d("TAG_MAPSS", location.toString())
                 currentLocation = location
                 Toast.makeText(
                     context, currentLocation!!.latitude
@@ -86,23 +93,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun direction() {
         val origin = "${currentLocation?.latitude}, ${currentLocation?.longitude}"
+        Log.d("TAG_MAPS", origin)
         val destinationLat = -6.9144
         val destinationLong = 107.6024
         val mode = "driving"
         val apiKey = BuildConfig.MAPS_API_KEY
-        val get = viewModel.getDirection(origin, "${destinationLat}, ${destinationLong}", mode, apiKey)
+        val get = viewModel.getDirection(origin, "$destinationLat, $destinationLong", mode, apiKey)
         get.observe(viewLifecycleOwner) { maps ->
             if (maps != null) {
-                Log.d("TAG_MAPS", maps.message.toString())
                 when (maps) {
                     is Resource.Loading<*> -> {
-//                        setViewCondition(
-//                            progress = true,
-//                            error = false,
-//                            empty = "error.json"
-//                        )
                     }
                     is Resource.Success<*> -> {
                         if(maps.data?.status == "OK") {
@@ -118,7 +121,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                                     for (k in 0 until steps?.size!!) {
                                         val polyline = steps[k].polyline?.points!!
                                         val list = decodePoly(polyline)
-                                        for (l in list!!.indices) {
+                                        for (l in list.indices) {
                                             val position =
                                                 LatLng(list[l].latitude, list[l].longitude)
                                             points.add(position)
@@ -161,99 +164,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                         get.removeObservers(viewLifecycleOwner)
                     }
                     is Resource.Error<*> -> {
-//                        setViewCondition(
-//                            progress = false,
-//                            error = true,
-//                            empty = "error.json"
-//                        )
                         get.removeObservers(viewLifecycleOwner)
                     }
                 }
             }
         }
-
-//        val requestQueue: RequestQueue = Volley.newRequestQueue(this)
-//        val url: String = Uri.parse("https://maps.googleapis.com/maps/api/directions/json")
-//            .buildUpon()
-//            .appendQueryParameter("destination", "-6.9218571, 107.6048254")
-//            .appendQueryParameter("origin", "-6.9249233, 107.6345122")
-//            .appendQueryParameter("mode", "driving")
-//            .appendQueryParameter("key", "YOUR_API_KEY")
-//            .toString()
-//        val jsonObjectRequest =
-//            JsonObjectRequest(Request.Method.GET, url, null, object : Listener<JSONObject?>() {
-//                fun onResponse(response: JSONObject) {
-//                    try {
-//                        val status = response.getString("status")
-//                        if (status == "OK") {
-//                            val routes = response.getJSONArray("routes")
-//                            var points: ArrayList<LatLng?>
-//                            var polylineOptions: PolylineOptions? = null
-//                            for (i in 0 until routes.length()) {
-//                                points = ArrayList()
-//                                polylineOptions = PolylineOptions()
-//                                val legs = routes.getJSONObject(i).getJSONArray("legs")
-//                                for (j in 0 until legs.length()) {
-//                                    val steps = legs.getJSONObject(j).getJSONArray("steps")
-//                                    for (k in 0 until steps.length()) {
-//                                        val polyline =
-//                                            steps.getJSONObject(k).getJSONObject("polyline")
-//                                                .getString("points")
-//                                        val list = decodePoly(polyline)
-//                                        for (l in list.indices) {
-//                                            val position =
-//                                                LatLng(list[l].latitude, list[l].longitude)
-//                                            points.add(position)
-//                                        }
-//                                    }
-//                                }
-//                                polylineOptions.addAll(points)
-//                                polylineOptions.width(10f)
-//                                polylineOptions.color(
-//                                    ContextCompat.getColor(
-//                                        this@MapsActivity,
-//                                        R.color.purple_500
-//                                    )
-//                                )
-//                                polylineOptions.geodesic(true)
-//                            }
-//                            mMap.addPolyline(polylineOptions)
-//                            mMap.addMarker(
-//                                MarkerOptions().position(LatLng(-6.9249233, 107.6345122))
-//                                    .title("Marker 1")
-//                            )
-//                            mMap.addMarker(
-//                                MarkerOptions().position(LatLng(-6.9218571, 107.6048254))
-//                                    .title("Marker 1")
-//                            )
-//                            val bounds = LatLngBounds.Builder()
-//                                .include(LatLng(-6.9249233, 107.6345122))
-//                                .include(LatLng(-6.9218571, 107.6048254)).build()
-//                            val point = Point()
-//                            getWindowManager().getDefaultDisplay().getSize(point)
-//                            mMap.animateCamera(
-//                                CameraUpdateFactory.newLatLngBounds(
-//                                    bounds,
-//                                    point.x,
-//                                    150,
-//                                    30
-//                                )
-//                            )
-//                        }
-//                    } catch (e: JSONException) {
-//                        e.printStackTrace()
-//                    }
-//                }
-//            }, object : ErrorListener() {
-//                fun onErrorResponse(error: VolleyError?) {}
-//            })
-//        val retryPolicy: RetryPolicy = DefaultRetryPolicy(
-//            30000,
-//            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-//        )
-//        jsonObjectRequest.setRetryPolicy(retryPolicy)
-//        requestQueue.add(jsonObjectRequest)
     }
 
     private fun decodePoly(encoded: String): List<LatLng> {
@@ -286,11 +201,5 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             poly.add(p)
         }
         return poly
-    }
-
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap;
-        direction();
     }
 }

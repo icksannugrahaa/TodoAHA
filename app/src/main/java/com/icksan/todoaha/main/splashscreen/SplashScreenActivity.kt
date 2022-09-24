@@ -1,9 +1,9 @@
 package com.icksan.todoaha.main.splashscreen
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.icksan.todoaha.databinding.ActivitySplashScreenBinding
 import com.icksan.todoaha.main.MainActivity
 import kotlinx.coroutines.*

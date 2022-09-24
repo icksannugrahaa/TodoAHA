@@ -1,6 +1,5 @@
 package com.icksan.todoaha.main.todo
 
-import com.icksan.todoaha.R
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.snackbar.Snackbar
+import com.icksan.todoaha.R
 import com.icksan.todoaha.core.data.Resource
 import com.icksan.todoaha.core.domain.model.Todo
 import com.icksan.todoaha.core.ui.TodoListAdapter
@@ -34,7 +34,6 @@ class TodoFragment : Fragment() {
     private var currentIdSelected = 0
     private var currentItem = Todo(null, null, null, null, null)
     private var todoData = ArrayList<Todo>()
-    private lateinit var dialogUtils: GlobalUtils
     private lateinit var todoAdapter: TodoListAdapter
 
     companion object {
@@ -158,10 +157,16 @@ class TodoFragment : Fragment() {
                 when (data) {
                     is Resource.Loading<*> -> {
                         showToast("Todo Deleted !", requireContext())
+                        if(todoData.isEmpty()) {
+                            setViewCondition(
+                                progress = false,
+                                error = true,
+                                empty = "empty.json"
+                            )
+                        }
                     }
                     is Resource.Success<*> -> {
                         setForm(null)
-                        getTodo(false)
                         delete.removeObservers(viewLifecycleOwner)
                     }
                     is Resource.Error<*> -> {
@@ -195,7 +200,11 @@ class TodoFragment : Fragment() {
                     when (newState) {
                         BottomSheetBehavior.STATE_HIDDEN -> {
                             keyboard.hideSoftInputFromWindow(view?.windowToken, 0)
-                            getTodo(false)
+                            if(todoData.isEmpty()) {
+                                getTodo(true)
+                            } else {
+                                getTodo(false)
+                            }
                         }
                         BottomSheetBehavior.STATE_COLLAPSED -> {
                             keyboard.hideSoftInputFromWindow(view?.windowToken, 0)

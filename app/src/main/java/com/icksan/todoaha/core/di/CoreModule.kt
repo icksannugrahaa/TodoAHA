@@ -38,7 +38,7 @@ object CoreModule {
         }
         single {
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://google.com")
+                .baseUrl("https://maps.googleapis.com/maps/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(get())
                 .build()

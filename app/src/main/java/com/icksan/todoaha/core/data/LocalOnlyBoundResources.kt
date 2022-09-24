@@ -1,7 +1,9 @@
 package com.icksan.todoaha.core.data
 
-import com.icksan.todoaha.core.data.source.remote.network.ApiResponse
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 abstract class LocalOnlyBoundResources<ResultType, RequestType> {
     private var result: Flow<Resource<ResultType>> = flow {
