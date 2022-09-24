@@ -3,6 +3,7 @@ package com.icksan.todoaha
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.icksan.todoaha.core.di.CoreModule.databaseModule
+import com.icksan.todoaha.core.di.CoreModule.networkModule
 import com.icksan.todoaha.core.di.CoreModule.repositoryModule
 import com.icksan.todoaha.main.di.MainModule.useCaseModule
 import com.icksan.todoaha.main.di.MainModule.viewModelModule
@@ -27,7 +28,7 @@ class MainApplication : Application()  {
             modules(
                 listOf(
                     databaseModule,
-//                    networkModule,
+                    networkModule,
                     repositoryModule,
                     useCaseModule,
                     viewModelModule

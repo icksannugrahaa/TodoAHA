@@ -10,7 +10,7 @@ import androidx.lifecycle.asLiveData
 class TodoViewModel(private val todoUseCase: TodoUseCase) : ViewModel() {
     fun listTodo(): LiveData<Resource<List<Todo>>> = todoUseCase.listTodo().asLiveData()
     fun findTodo(search: String): LiveData<Resource<List<Todo>>> = todoUseCase.findTodo(search).asLiveData()
-    fun storeTodo(todo: Todo): LiveData<Resource<String>> = todoUseCase.storeTodo(todo).asLiveData()
-    fun updateTodo(todo: Todo): LiveData<Resource<String>> = todoUseCase.updateTodo(todo).asLiveData()
-    fun deleteTodo(todo: Todo): LiveData<Resource<String>> = todoUseCase.removeTodo(todo).asLiveData()
+    fun storeTodo(todo: Todo): LiveData<Resource<Todo>> = todoUseCase.storeTodo(todo).asLiveData()
+    fun updateTodo(todo: Todo): LiveData<Resource<Todo>> = todoUseCase.updateTodo(todo).asLiveData()
+    fun deleteTodo(todo: Todo): LiveData<Resource<Todo>> = todoUseCase.removeTodo(todo).asLiveData()
 }

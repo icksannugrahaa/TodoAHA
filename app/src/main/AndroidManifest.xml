@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.icksan.todoaha">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -14,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoAHA"
         tools:targetApi="31">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyA9qriOPr3gLg05OGWqSQEKqEIIBecc3jA"/>
+        <activity
+            android:name=".main.todo.TodoDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".main.MainActivity"
             android:exported="false"

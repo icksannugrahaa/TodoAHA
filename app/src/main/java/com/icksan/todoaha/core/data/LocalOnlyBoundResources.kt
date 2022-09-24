@@ -1,5 +1,6 @@
 package com.icksan.todoaha.core.data
 
+import com.icksan.todoaha.core.data.source.remote.network.ApiResponse
 import kotlinx.coroutines.flow.*
 
 abstract class LocalOnlyBoundResources<ResultType, RequestType> {

@@ -5,9 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Todo (
-    val id: Int,
+    val id: Int?,
     val title: String?,
     val description: String?,
-    val createdAt: String?,
-    val updatedAt: String?
+    val createdAt: Long?,
+    val updatedAt: Long?
 ) : Parcelable

@@ -1,12 +1,16 @@
 package com.icksan.todoaha.core.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.icksan.todoaha.R
 import com.icksan.todoaha.core.domain.model.Todo
 import com.icksan.todoaha.databinding.ItemListTodoBinding
+import com.icksan.todoaha.main.todo.SwipeCallback
+
 
 class TodoListAdapter: RecyclerView.Adapter<TodoListAdapter.ItemViewHolder>() {
     private var listData = ArrayList<Todo>()
@@ -16,6 +20,7 @@ class TodoListAdapter: RecyclerView.Adapter<TodoListAdapter.ItemViewHolder>() {
         if (newListData == null) return
         listData.clear()
         listData.addAll(newListData)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

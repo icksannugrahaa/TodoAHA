@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.icksan.todoaha.core.data.source.local.entitiy.TodoEntity
 
 @Database(entities = [TodoEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false)
 abstract class AHADatabase : RoomDatabase() {
     abstract fun TodoDao(): TodoDao

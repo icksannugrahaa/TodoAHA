@@ -7,17 +7,17 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "todos")
 data class TodoEntity (
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: Int?,
     @ColumnInfo(name = "title")
     @NonNull
     val title: String?,
     @ColumnInfo(name = "description")
     val description: String?,
     @ColumnInfo(name = "created_at")
-    val createdAt: String?,
+    val createdAt: Long?,
     @ColumnInfo(name = "updated_at")
-    val updatedAt: String?
+    val updatedAt: Long?
 )

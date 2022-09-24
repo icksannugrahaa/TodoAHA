@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_todo_detail.xml" value="0.22" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/bottom_sheet_todo.xml" value="0.14" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.12" />

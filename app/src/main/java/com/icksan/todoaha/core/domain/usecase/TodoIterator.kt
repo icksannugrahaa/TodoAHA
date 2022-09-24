@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class TodoIterator(private val repository: ITodoRepository) : TodoUseCase {
     override fun listTodo(): Flow<Resource<List<Todo>>> = repository.listTodo()
     override fun findTodo(search: String): Flow<Resource<List<Todo>>> = repository.findTodo(search)
-    override fun storeTodo(todo: Todo): Flow<Resource<String>> = repository.storeTodo(todo)
-    override fun updateTodo(todo: Todo): Flow<Resource<String>> = repository.updateTodo(todo)
-    override fun removeTodo(todo: Todo): Flow<Resource<String>> = repository.removeTodo(todo)
+    override fun storeTodo(todo: Todo): Flow<Resource<Todo>> = repository.storeTodo(todo)
+    override fun updateTodo(todo: Todo): Flow<Resource<Todo>> = repository.updateTodo(todo)
+    override fun removeTodo(todo: Todo): Flow<Resource<Todo>> = repository.removeTodo(todo)
 }

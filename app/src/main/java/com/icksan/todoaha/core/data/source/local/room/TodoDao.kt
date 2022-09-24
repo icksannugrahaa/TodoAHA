@@ -14,11 +14,11 @@ interface TodoDao {
     fun findTodo(search: String): Flow<List<TodoEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTodo(todo: TodoEntity)
+    suspend fun insertTodo(todo: TodoEntity)
 
     @Update
-    fun updateTodo(todo: TodoEntity)
+    suspend fun updateTodo(todo: TodoEntity)
 
     @Delete
-    fun deleteTodo(todo: TodoEntity)
+    suspend fun deleteTodo(todo: TodoEntity)
 }
